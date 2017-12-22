@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"log"
 )
 
 // resultContainer stores the results of a request
@@ -98,7 +99,7 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		result.render(w)
 		return
 	}
-
+	log.Println(comment)
 	err = db.CreateComment(&comment)
 	if err != nil {
 		result.Status = http.StatusInternalServerError
