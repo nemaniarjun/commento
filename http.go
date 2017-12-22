@@ -50,7 +50,6 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 
 // CreateCommentHandler handles the '/create' endpoint that is used to create a
 // new comment. It requires the following POST request body values:
-//	   - name: the name of the comment author
 //	   - parent: ID of the parent comment
 //     - comment: the comment text itself
 //     - url: the URL associated with this comment
@@ -65,7 +64,8 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	requiredFields := []string{"name", "parent", "comment", "url"}
+	// requiredFields := []string{"name", "parent", "comment", "url"}
+	requiredFields := []string{"parent", "comment", "url"}
 	for _, field := range requiredFields {
 		if strings.TrimSpace(r.PostFormValue(field)) == "" {
 			result.Status = http.StatusBadRequest
@@ -84,7 +84,8 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	comment := Comment{}
 
-	comment.Name = template.HTMLEscapeString(r.PostFormValue("name"))
+	// comment.Name = template.HTMLEscapeString(r.PostFormValue("name"))
+	comment.Name = r.Header.Get("My_Name")
 
 	comment.Comment = template.HTMLEscapeString(r.PostFormValue("comment"))
 
